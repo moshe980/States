@@ -1,37 +1,37 @@
 package com.example.ep.myapplication.Activitys.Adapters;
 
 import android.content.Context;
+import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.GenericLifecycleObserver;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.StreamEncoder;
+import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
+import com.caverock.androidsvg.SVG;
 import com.example.ep.myapplication.Activitys.Activitys.MainActivity;
 import com.example.ep.myapplication.Activitys.Fragments.mainFirstFragment;
 import com.example.ep.myapplication.Activitys.Model.State;
 
 import com.example.ep.myapplication.R;
-import com.squareup.picasso.Picasso;
 
 
+import java.io.InputStream;
 import java.util.ArrayList;
-
-import okhttp3.internal.Util;
 
 /**
  * Created by EP on 19/07/2017.
@@ -73,9 +73,20 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateAdapter
         System.out.println(position);
         System.out.println(data.get(position).getName());
         System.out.println(data.get(position).getFlag());
-
         if (path!=null) {
-            Utils.fetchSvg(context,path,flagIcon);
+            GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder = Glide.with(context)
+                    .using(Glide.buildStreamModelLoader(Uri.class, context), InputStream.class)
+                    .from(Uri.class)
+                    .as(SVG.class)
+                    .transcode(new SvgDrawableTranscoder(), PictureDrawable.class)
+                    .sourceEncoder(new StreamEncoder())
+                    .cacheDecoder(new FileToStreamDecoder<SVG>(new SvgDecoder()))
+                    .decoder(new SvgDecoder())
+                    .listener(new SvgSoftwareLayerSetter<Uri>());
+
+            requestBuilder.diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .load(Uri.parse(data.get(position).getFlag()))
+                    .into(holder.flagIcon);
 
         }
         cardView.setOnClickListener(new View.OnClickListener() {
