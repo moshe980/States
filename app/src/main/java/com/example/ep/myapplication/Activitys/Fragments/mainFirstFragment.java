@@ -1,9 +1,6 @@
 package com.example.ep.myapplication.Activitys.Fragments;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,18 +8,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ep.myapplication.Activitys.Activitys.MainActivity;
 import com.example.ep.myapplication.Activitys.Adapters.StateAdapter;
 import com.example.ep.myapplication.Activitys.Model.State;
 import com.example.ep.myapplication.Activitys.Services.DataService;
@@ -44,14 +35,14 @@ public class mainFirstFragment extends Fragment {  // first fragment - listview 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private StateAdapter theAdapter;
-    private ListView theListView;
-    private ArrayList<State> allstates;
+    private RecyclerView recyclerView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFirstFragmentInteractionListener mListener;
+    private ArrayList<State> allstates=new ArrayList<State>();
 
     public mainFirstFragment() {
         // Required empty public constructor
@@ -91,63 +82,11 @@ public class mainFirstFragment extends Fragment {  // first fragment - listview 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final DataService ds = new DataService();
         final View v = inflater.inflate(R.layout.fragment_main_first, container, false);
+        new DataService.DownloadData(v).execute();
 
 
-       allstates =  ds.getArrState();
 
-
-         theAdapter = new StateAdapter(getActivity(),allstates);
-
-
-         theListView = (ListView) v.findViewById(R.id.ListViewsir);
-
-        theListView.setAdapter(theAdapter);
-
-      //  theListView.setOnTouchListener(sd);
-        theListView.setTextFilterEnabled(true);
-        EditText inputSearch = (EditText) v.findViewById(R.id.inputSearch);
-
-        // Adding items to listview
-
-        inputSearch.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user changed the Text
-
-                    theAdapter = new StateAdapter(getActivity(), theAdapter.custumeFilter(allstates, cs.toString()));
-                    theListView.setAdapter(theAdapter);
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
-                view.startAnimation(hyperspaceJumpAnimation);
-
-                State s = (State) parent.getAdapter().getItem(position);
-                MainActivity ma =(MainActivity) getActivity();
-                ma.LoadSecFragment(s);
-
-            }
-        });
 
 
         return v;

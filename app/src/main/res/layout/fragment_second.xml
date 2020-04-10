@@ -6,9 +6,9 @@
     tools:context="com.example.ep.myapplication.Activitys.Fragments.SecondFragment">
 
 
-    <ListView
-        android:id="@+id/ListViewRe"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewSecond"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@android:color/background_light" />

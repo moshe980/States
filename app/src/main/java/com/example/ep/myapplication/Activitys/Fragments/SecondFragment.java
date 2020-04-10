@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ep.myapplication.Activitys.Activitys.MainActivity;
 import com.example.ep.myapplication.Activitys.Adapters.StateAdapter;
@@ -41,7 +43,6 @@ public class SecondFragment extends Fragment { // second fragment - borders
     private String mParam2;
     private State s;
     private StateAdapter theAdapter;
-    private ListView theListView;
     private OnSecondFragmentInteractionListener mListener;
 
     public SecondFragment() {
@@ -85,6 +86,10 @@ public class SecondFragment extends Fragment { // second fragment - borders
         View v = inflater.inflate(R.layout.fragment_second, container, false);
 
         Button b = (Button) v.findViewById(R.id.button);
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recyclerviewSecond);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         b.setOnClickListener(new View.OnClickListener() {
 
@@ -115,9 +120,9 @@ public class SecondFragment extends Fragment { // second fragment - borders
         theAdapter = new StateAdapter(getActivity(),arrR);
 
 
-        theListView = (ListView) v.findViewById(R.id.ListViewRe);
 
-        theListView.setAdapter(theAdapter);
+        recyclerView.setAdapter(theAdapter);
+
 
 
         return v;
