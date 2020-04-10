@@ -1,4 +1,4 @@
-package com.example.ep.myapplication.Activitys.Class;
+package com.example.ep.myapplication.Activitys.Adapters;
 
 import android.graphics.Picture;
 import android.graphics.drawable.PictureDrawable;

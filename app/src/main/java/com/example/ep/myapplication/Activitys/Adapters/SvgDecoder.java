@@ -1,4 +1,4 @@
-package com.example.ep.myapplication.Activitys.Class;
+package com.example.ep.myapplication.Activitys.Adapters;
 
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.resource.SimpleResource;
